@@ -1,16 +1,21 @@
 {
-	"name": "clone-tabnews",
-	"version": "1.0.0",
-	"main": "index.js",
-	"scripts": {
-		"dev": "next dev"
-	},
-	"repository": "https://github.com/okborges/clone-tabnews.git",
-	"author": "Rafael Borges <rafael.okborges@gmail.com>",
-	"license": "MIT",
-	"dependencies": {
-		"next": "13.1.6",
-		"react": "18.2.0",
-		"react-dom": "18.2.0"
-	}
+  "name": "clone-tabnews",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "lint:check": "prettier --check .",
+    "lint:fix": ""
+  },
+  "repository": "https://github.com/okborges/clone-tabnews.git",
+  "author": "Rafael Borges <rafael.okborges@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "next": "13.1.6",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.7.4"
+  }
 }
