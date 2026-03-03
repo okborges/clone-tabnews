@@ -3,13 +3,17 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "next dev",
+    "dev": "yarn services:up && yarn wait-for-postgres && yarn migration:up && next dev",
+    "services:up": "wsl docker compose -f infra/compose.yaml up -d",
+    "services:stop": "wsl docker compose -f infra/compose.yaml stop",
+    "services:down": "wsl docker compose -f infra/compose.yaml down",
     "lint:check": "prettier --check .",
     "lint:fix": "prettier --write .",
     "test": "jest --runInBand",
     "test:watch": "jest --watchAll --runInBand",
     "migration:create": "node-pg-migrate -m infra/migrations create",
-    "migration:up": "node-pg-migrate -m infra/migrations --envPath .env.development up"
+    "migration:up": "node-pg-migrate -m infra/migrations --envPath .env.development up",
+    "wait-for-postgres": "node infra/scripts/wait-for-postgres.js"
   },
   "repository": "https://github.com/okborges/clone-tabnews.git",
   "author": "Rafael Borges <rafael.okborges@gmail.com>",
