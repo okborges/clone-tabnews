@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "yarn services:up && yarn wait-for-postgres && yarn migration:up && next dev",
     "test": "yarn services:up && concurrently -n next,jest --hide next -k -s command-jest \"next dev\" \"jest --runInBand --verbose\"",
+    "test:ci": "yarn services:upci && concurrently -n next,jest --hide next -k -s command-jest \"next dev\" \"jest --runInBand --verbose\"",
     "services:up": "wsl docker compose -f infra/compose.yaml up -d",
+    "services:upci": "docker compose -f infra/compose.yaml up -d",
     "services:stop": "wsl docker compose -f infra/compose.yaml stop",
     "services:down": "wsl docker compose -f infra/compose.yaml down",
     "lint:check": "prettier --check .",
