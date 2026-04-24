@@ -3,7 +3,7 @@ const { exec } = require("node:child_process");
 function checkPostgres() {
   exec(
     "wsl docker exec postgres-dev pg_isready --host localhost",
-    handleReturn
+    handleReturn,
   );
 
   function handleReturn(error, stdout) {
