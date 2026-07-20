@@ -1,5 +1,38 @@
 import database from "infra/database";
-import { ValidationError } from "infra/erros";
+import { ValidationError, NotFoundError } from "infra/erros";
+
+async function findOneByUsername(username) {
+  const userFound = await runSelectQuery(username);
+  return userFound;
+
+  async function runSelectQuery(username) {
+    const results = await database.query({
+      text: `
+    SELECT 
+      *
+    FROM
+      users
+    WHERE
+      LOWER(username) = LOWER($1)
+      LIMIT
+      1
+    ;`,
+
+      values: [username],
+    });
+
+    if (results.rowCount === 0) {
+      throw new NotFoundError({
+        name: "NotFoundError",
+        message: "O username informado não foi encontrado no sistema.",
+        action: "Verifique se o usrname está digitado corretamente.",
+        status_code: 404,
+      });
+    }
+
+    return results.rows[0];
+  }
+}
 
 async function create(userInputValues) {
   await validateUniqueEmail(userInputValues.email);
@@ -9,7 +42,7 @@ async function create(userInputValues) {
   return newUser;
 
   async function validateUniqueEmail(email) {
-    const result = await database.query({
+    const results = await database.query({
       text: `
     SELECT 
       email
@@ -22,7 +55,7 @@ async function create(userInputValues) {
       values: [email],
     });
 
-    if (result.rowCount > 0) {
+    if (results.rowCount > 0) {
       throw new ValidationError({
         message: "O email informado já está sendo utilizado.",
         action: "Utilize outro email para realizar o cadastro.",
@@ -30,7 +63,7 @@ async function create(userInputValues) {
     }
   }
   async function validateUniqueUsername(username) {
-    const result = await database.query({
+    const results = await database.query({
       text: `
     SELECT 
       username
@@ -43,7 +76,7 @@ async function create(userInputValues) {
       values: [username],
     });
 
-    if (result.rowCount > 0) {
+    if (results.rowCount > 0) {
       throw new ValidationError({
         message: "O username informado já está sendo utilizado.",
         action: "Utilize outro username para realizar o cadastro.",
@@ -75,6 +108,7 @@ async function create(userInputValues) {
 
 const user = {
   create,
+  findOneByUsername,
 };
 
 export default user;
