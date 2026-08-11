@@ -2,6 +2,7 @@ import { createRouter } from "next-connect";
 import controller from "infra/controller";
 import user from "models/user.js";
 import { UnauthorizedError } from "infra/erros.js";
+import password from "models/password";
 
 const router = createRouter();
 
@@ -14,6 +15,17 @@ async function postHandler(request, response) {
 
   try {
     const storedUser = await user.findOneByEmail(userInputValues.email);
+    const correctPasswordMatch = await password.compare(
+      userInputValues.password,
+      storedUser.password,
+    );
+
+    if (!correctPasswordMatch) {
+      throw new UnauthorizedError({
+        message: "Senha não conferem.",
+        action: "Verifique se os dados enviados estão corretos.",
+      });
+    }
   } catch (error) {
     throw new UnauthorizedError({
       message: "Dados de autenticação não conferem.",
