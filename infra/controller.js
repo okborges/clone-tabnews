@@ -1,6 +1,7 @@
 import {
   InternalServerError,
   MethodNotAllowedError,
+  ServiceError,
   ValidationError,
   NotFoundError,
   UnauthorizedError,
@@ -15,7 +16,8 @@ function onErrorHandler(error, request, response) {
   if (
     error instanceof ValidationError ||
     error instanceof NotFoundError ||
-    error instanceof UnauthorizedError
+    error instanceof UnauthorizedError ||
+    error instanceof ServiceError
   ) {
     return response.status(error.statusCode).json(error);
   }
