@@ -1,7 +1,6 @@
 import {
   InternalServerError,
   MethodNotAllowedError,
-  ServiceError,
   ValidationError,
   NotFoundError,
   UnauthorizedError,
@@ -16,8 +15,7 @@ function onErrorHandler(error, request, response) {
   if (
     error instanceof ValidationError ||
     error instanceof NotFoundError ||
-    error instanceof UnauthorizedError ||
-    error instanceof ServiceError
+    error instanceof UnauthorizedError
   ) {
     return response.status(error.statusCode).json(error);
   }
@@ -25,6 +23,9 @@ function onErrorHandler(error, request, response) {
   const publicErrorObject = new InternalServerError({
     cause: error,
   });
+
+  console.error(publicErrorObject);
+
   response.status(publicErrorObject.statusCode).json(publicErrorObject);
 }
 
