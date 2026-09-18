@@ -1,6 +1,6 @@
 import database from "infra/database";
 import password from "models/password.js";
-import { ValidationError, NotFoundError } from "infra/erros";
+import { ValidationError, NotFoundError } from "infra/errors";
 
 async function findOneById(id) {
   const userFound = await runSelectQuery(id);
