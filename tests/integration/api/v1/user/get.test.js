@@ -27,9 +27,7 @@ describe("GET /api/v1/user", () => {
       expect(response.status).toBe(200);
 
       const cacheControl = response.headers.get("Cache-Control");
-      expect(cacheControl).toBe(
-        "no-store, no-cache, max-age=0, must-revalidate",
-      );
+      expect(cacheControl).toBe("no-store, no-cache, max-age=0, must-revalidate");
 
       const responseBody = await response.json();
 
@@ -47,16 +45,10 @@ describe("GET /api/v1/user", () => {
       expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
 
       // Session renewal assertions
-      const renewedSessionObject = await session.findOneValidByToken(
-        sessionObject.token,
-      );
+      const renewedSessionObject = await session.findOneValidByToken(sessionObject.token);
 
-      expect(
-        renewedSessionObject.expires_at > sessionObject.expires_at,
-      ).toEqual(true);
-      expect(
-        renewedSessionObject.updated_at > sessionObject.updated_at,
-      ).toEqual(true);
+      expect(renewedSessionObject.expires_at > sessionObject.expires_at).toEqual(true);
+      expect(renewedSessionObject.updated_at > sessionObject.updated_at).toEqual(true);
 
       // Set-Cookie assertions
       const parsedSetCookie = setCookieParser(response, {
@@ -109,16 +101,10 @@ describe("GET /api/v1/user", () => {
       expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
 
       // Session renewal assertions
-      const renewedSessionObject = await session.findOneValidByToken(
-        sessionObject.token,
-      );
+      const renewedSessionObject = await session.findOneValidByToken(sessionObject.token);
 
-      expect(
-        renewedSessionObject.expires_at > sessionObject.expires_at,
-      ).toEqual(true);
-      expect(
-        renewedSessionObject.updated_at > sessionObject.updated_at,
-      ).toEqual(true);
+      expect(renewedSessionObject.expires_at > sessionObject.expires_at).toEqual(true);
+      expect(renewedSessionObject.updated_at > sessionObject.updated_at).toEqual(true);
 
       // Set‑Cookie assertions
       const parsedSetCookie = setCookieParser(response, {
