@@ -36,10 +36,7 @@ async function getAuthenticatedUser(providerEmail, providerPassword) {
   }
 
   async function validatePassword(providerPassword, storePassword) {
-    const correctPasswordMatch = await password.compare(
-      providerPassword,
-      storePassword,
-    );
+    const correctPasswordMatch = await password.compare(providerPassword, storePassword);
 
     if (!correctPasswordMatch) {
       throw new UnauthorizedError({

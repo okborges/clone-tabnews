@@ -16,9 +16,7 @@ describe("Get to /api/users/[username]", () => {
         password: "senha123",
       });
 
-      const response2 = await fetch(
-        "http://localhost:3000/api/v1/users/MesmoCase",
-      );
+      const response2 = await fetch("http://localhost:3000/api/v1/users/MesmoCase");
       expect(response2.status).toBe(200);
 
       const response2Body = await response2.json();
@@ -44,9 +42,7 @@ describe("Get to /api/users/[username]", () => {
         password: "senha123",
       });
 
-      const response2 = await fetch(
-        "http://localhost:3000/api/v1/users/casediferente",
-      );
+      const response2 = await fetch("http://localhost:3000/api/v1/users/casediferente");
       expect(response2.status).toBe(200);
 
       const response2Body = await response2.json();
@@ -66,9 +62,7 @@ describe("Get to /api/users/[username]", () => {
     });
 
     test("With nonecistent username", async () => {
-      const response = await fetch(
-        "http://localhost:3000/api/v1/users/Usiarioinexistente",
-      );
+      const response = await fetch("http://localhost:3000/api/v1/users/Usiarioinexistente");
 
       expect(response.status).toBe(404);
 

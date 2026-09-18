@@ -1,7 +1,8 @@
+import * as cookie from "cookie";
+import session from "models/session.js";
 import {
   InternalServerError,
   MethodNotAllowedError,
-  ServiceError,
   ValidationError,
   NotFoundError,
   UnauthorizedError,
@@ -16,8 +17,7 @@ function onErrorHandler(error, request, response) {
   if (
     error instanceof ValidationError ||
     error instanceof NotFoundError ||
-    error instanceof UnauthorizedError ||
-    error instanceof ServiceError
+    error instanceof UnauthorizedError
   ) {
     return response.status(error.statusCode).json(error);
   }
@@ -25,7 +25,21 @@ function onErrorHandler(error, request, response) {
   const publicErrorObject = new InternalServerError({
     cause: error,
   });
+
+  console.error(publicErrorObject);
+
   response.status(publicErrorObject.statusCode).json(publicErrorObject);
+}
+
+async function setSessionCookie(sessionToken, response) {
+  const setCookie = cookie.serialize("session_id", sessionToken, {
+    path: "/",
+    maxAge: session.EXPIRATION_IN_MILLSECONDS / 1000,
+    secure: process.env.NODE_ENV === "production",
+    httpOnly: true,
+  });
+
+  response.setHeader("Set-Cookie", setCookie);
 }
 
 const controller = {
@@ -33,5 +47,6 @@ const controller = {
     onNoMatch: onNoMatchHandler,
     onError: onErrorHandler,
   },
+  setSessionCookie,
 };
 export default controller;
