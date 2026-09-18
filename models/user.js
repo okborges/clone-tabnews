@@ -115,11 +115,7 @@ async function create(userInputValues) {
         *
     ;`,
 
-      values: [
-        userInputValues.username,
-        userInputValues.email,
-        userInputValues.password,
-      ],
+      values: [userInputValues.username, userInputValues.email, userInputValues.password],
     });
 
     return result.rows[0];
