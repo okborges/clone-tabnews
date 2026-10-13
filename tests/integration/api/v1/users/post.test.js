@@ -33,6 +33,7 @@ describe("Post to /api/users", () => {
         username: "okborges2",
         email: "Rafael@gmail.com",
         password: responseBody.password,
+        features: [],
         created_at: responseBody.created_at,
         updated_at: responseBody.updated_at,
       });
