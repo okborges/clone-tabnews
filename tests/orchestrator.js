@@ -6,6 +6,8 @@ import migrator from "models/migrator.js";
 import user from "models/user.js";
 import session from "models/session";
 
+const emailHttpUrl = `http://${process.env.EMAIL_HTTP_HOST}:${process.env.EMAIL_HTTP_PORT}`;
+
 async function waitForAllServices() {
   await waitForWebServer();
 
@@ -45,12 +47,30 @@ async function createSession(userId) {
   return await session.create(userId);
 }
 
+async function deleteAllEmails() {
+  await fetch(`${emailHttpUrl}/messages`, {
+    method: "DELETE",
+  });
+}
+
+async function getLestEmail() {
+  const emailListResponse = await fetch(`${emailHttpUrl}/messages`);
+  const emailListBody = await emailListResponse.json();
+  const lastEmailItem = emailListBody.pop();
+
+  const emailTextResponse = await fetch(`${emailHttpUrl}/messages/${lastEmailItem.id}.plain`);
+  const emailTextBody = await emailTextResponse.text();
+  console.log(emailTextBody);
+}
+
 const orchestrator = {
   waitForAllServices,
   clearDatabase,
   runPendingMigrations,
   createUser,
   createSession,
+  deleteAllEmails,
+  getLestEmail,
 };
 
 export default orchestrator;
